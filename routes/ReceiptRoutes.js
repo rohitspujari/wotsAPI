@@ -8,7 +8,7 @@ Firebase.initializeApp({
   databaseURL: "https://wots.firebaseio.com/"
 });
 db = Firebase.database()
-var ref = db.ref("receipts/");
+var ref = db.ref("/users");
 
 var ReceiptRoutes = function(Receipt){
 
@@ -29,11 +29,11 @@ var ReceiptRoutes = function(Receipt){
     .post(function(req,res){
 
       if(req.body.cc){
-        let paymentRef = db.ref("payment/");
+        let paymentRef = db.ref("all_payments/");
         paymentRef.child(req.body.cc).once('value',function(snaphot){
           let cc = snaphot.val();
           if(cc){
-            ref.child(cc.uid).push(req.body, function(err){
+            ref.child(cc.uid+'/receipts/').push(req.body, function(err){
               if(err){
                 console.log('Error writing!');
               }
